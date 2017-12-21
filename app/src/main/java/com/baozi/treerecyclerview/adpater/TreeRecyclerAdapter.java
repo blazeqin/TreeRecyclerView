@@ -34,6 +34,10 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
         type = treeRecyclerType == null ? TreeRecyclerType.SHOW_DEFUTAL : treeRecyclerType;
     }
 
+    public TreeRecyclerType getType() {
+        return type;
+    }
+
     @Override
     public void onBindViewHolderClick(final ViewHolder holder, View view) {
         if (!view.hasOnClickListeners()) {
@@ -49,10 +53,10 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
                     TreeItem item = getDatas().get(layoutPosition);
                     //展开,折叠和item点击不应该同时响应事件.
                     //必须是TreeItemGroup才能展开折叠,并且type不能为 TreeRecyclerType.SHOW_ALL
-                    if (type != TreeRecyclerType.SHOW_ALL && item instanceof TreeItemGroup && ((TreeItemGroup) item).isCanExpand()) {
-                        //展开,折叠
-                        expandOrCollapse(((TreeItemGroup) item));
-                    } else {
+//                    if (type != TreeRecyclerType.SHOW_ALL && item instanceof TreeItemGroup && ((TreeItemGroup) item).isCanExpand()) {
+//                        //展开,折叠
+//                        expandOrCollapse(((TreeItemGroup) item));
+//                    } else {
                         TreeItemGroup itemParentItem = item.getParentItem();
                         //判断上一级是否需要拦截这次事件，只处理当前item的上级，不关心上上级如何处理.
                         if (itemParentItem != null && itemParentItem.onInterceptClick(item)) {
@@ -64,7 +68,7 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
                             //拿到对应item,回调.
                             getDatas().get(layoutPosition).onClick(holder);
                         }
-                    }
+//                    }
                 }
 //                }
             });
@@ -188,7 +192,7 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
     /**
      * 相应RecyclerView的点击事件 展开或关闭某节点
      */
-    private void expandOrCollapse(TreeItemGroup treeItemGroup) {
+    public void expandOrCollapse(TreeItemGroup treeItemGroup) {
         boolean expand = treeItemGroup.isExpand();
         treeItemGroup.setExpand(!expand);
         treeItemGroup.notifyExpand();
@@ -238,9 +242,16 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
         public void addItem(int position, TreeItem item) {
             getDatas().add(position, item);
             if (item != null && item.getParentItem() != null) {
-                item.getParentItem().getChild().add(item);
+                item.getParentItem().getChild().add(item.position,item);
+                resortChildPosition(item.getParentItem().getChild());
             }
             notifyDataChanged();
+        }
+
+        private void resortChildPosition(List<TreeItem> child) {
+            for (int i = 0; i < child.size(); i++) {
+                child.get(i).position = i;
+            }
         }
 
         @Override
@@ -277,9 +288,23 @@ public class TreeRecyclerAdapter extends BaseRecyclerAdapter<TreeItem> {
             TreeItemGroup parentItem = t.getParentItem();
             if (parentItem != null && parentItem.getChild() != null) {
                 parentItem.getChild().remove(t);
+                resortChildPosition(parentItem.getChild());
             }
             getDatas().remove(position);
             notifyDataChanged();
+        }
+
+        /**
+         *根据不同的操作，如上移、下移，执行不同的删除
+         */
+        @Override
+        public void removeItemWithoutNotify(int position) {
+            TreeItem t = getDatas().get(position);
+            TreeItemGroup parentItem = t.getParentItem();
+            if (parentItem != null && parentItem.getChild() != null) {
+                parentItem.getChild().remove(t);
+            }
+            getDatas().remove(position);
         }
 
         @Override

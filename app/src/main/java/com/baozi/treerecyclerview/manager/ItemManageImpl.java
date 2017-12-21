@@ -51,6 +51,10 @@ public class ItemManageImpl<T> extends ItemManager<T> {
     }
 
     @Override
+    public void removeItemWithoutNotify(int position) {
+    }
+
+    @Override
     public void removeItems(List<T> items) {
         getDatas().removeAll(items);
         notifyDataChanged();

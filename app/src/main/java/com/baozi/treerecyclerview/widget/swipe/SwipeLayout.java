@@ -406,6 +406,8 @@ public class SwipeLayout extends FrameLayout {
         View currentBottomView = getCurrentBottomView();
         if (getOpenStatus() == Status.Close) {
             mViewBoundCache.remove(currentBottomView);
+            //Fix abnormal offset of surface view when used in RecyclerView
+            mViewBoundCache.remove(getSurfaceView());
             return;
         }
 
@@ -1376,7 +1378,8 @@ public class SwipeLayout extends FrameLayout {
             else if (xvel < -minVelocity) open();
             else {
                 float openPercent = 1f * (-getSurfaceView().getLeft()) / mDragDistance;
-                if (openPercent > willOpenPercent) open();
+                if (openPercent == 1f) close();
+                else if (openPercent > willOpenPercent) open();
                 else close();
             }
         } else if (currentDragEdge == DragEdge.Top) {

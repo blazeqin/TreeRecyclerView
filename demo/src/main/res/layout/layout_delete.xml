@@ -5,27 +5,29 @@
               android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/tv_up"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@android:color/holo_blue_light"
+        android:gravity="center"
+        android:text="上移"
+        android:textColor="#fff"/>
+
+    <TextView
         android:id="@+id/tv_delete"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@android:color/holo_red_dark"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
         android:text="删除"
         android:textColor="#fff"/>
 
     <TextView
+        android:id="@+id/tv_down"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@android:color/holo_red_dark"
+        android:background="@android:color/holo_blue_light"
         android:gravity="center"
-        android:text="删除"
-        android:textColor="#fff"/>
-
-    <TextView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/holo_red_dark"
-        android:gravity="center"
-        android:text="删除"
+        android:text="下移"
         android:textColor="#fff"/>
 </LinearLayout>

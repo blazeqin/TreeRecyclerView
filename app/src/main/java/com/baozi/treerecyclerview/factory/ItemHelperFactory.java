@@ -62,6 +62,7 @@ public class ItemHelperFactory {
                 if (iClass != null) {
                     TreeItem treeItem = iClass.newInstance();
                     treeItem.setData(itemData);
+                    treeItem.position = i;
                     treeItem.setParentItem(treeParentItem);
                     treeItemList.add(treeItem);
                 }
@@ -126,7 +127,7 @@ public class ItemHelperFactory {
 
     /**
      * 根据TreeRecyclerType获取子item集合,不包含TreeItemGroup自身
-     *
+     * three layer
      * @param itemGroup
      * @param type
      * @return
@@ -146,6 +147,7 @@ public class ItemHelperFactory {
                 switch (type) {
                     case SHOW_ALL:
                         //调用下级的getAllChilds遍历,相当于递归遍历
+                        itemGroup.setExpand(true);
                         list = ((TreeItemGroup) baseItem).getAllChilds();
                         break;
                     case SHOW_EXPAND:
@@ -165,6 +167,38 @@ public class ItemHelperFactory {
         return baseItems;
     }
 
+    /**
+     * 根据TreeRecyclerType获取子item集合,不包含TreeItemGroup自身
+     * two layer
+     * @param itemGroup
+     * @param type
+     * @return
+     */
+    @NonNull
+    public static ArrayList<TreeItem> getChildItemsWithConfigType(TreeItemGroup itemGroup, TreeRecyclerType type) {
+        ArrayList<TreeItem> baseItems = new ArrayList<>();
+        List list = null;
+        switch (type) {
+            case SHOW_ALL:
+                //调用下级的getAllChilds遍历,相当于递归遍历
+                itemGroup.setExpand(true);
+                list = itemGroup.getAllChilds();
+                break;
+            case SHOW_EXPAND:
+                //根据isExpand,来决定是否展示
+                if (itemGroup.isExpand()) {
+                    list = itemGroup.getAllChilds();
+                }
+                break;
+            case SHOW_DEFUTAL:
+                break;
+        }
+        if (list != null && list.size() > 0) {
+            baseItems.addAll(list);
+        }
+        return baseItems;
+    }
+
     @NonNull
     public static ArrayList<TreeItem> getChildItemsWithType(List<TreeItem> treeItems, TreeRecyclerType type) {
 
@@ -177,7 +211,7 @@ public class ItemHelperFactory {
             TreeItem treeItem = treeItems.get(i);
             baseItems.add(treeItem);
             if (treeItem instanceof TreeItemGroup) {
-                ArrayList<TreeItem> childItems = getChildItemsWithType((TreeItemGroup) treeItem, type);
+                ArrayList<TreeItem> childItems = getChildItemsWithConfigType((TreeItemGroup) treeItem, type);
                 if (!childItems.isEmpty()) {
                     baseItems.addAll(childItems);
                 }

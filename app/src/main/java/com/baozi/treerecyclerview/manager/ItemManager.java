@@ -34,6 +34,8 @@ public abstract class ItemManager<T> {
 
     public abstract void removeItem(int position);
 
+    public abstract void removeItemWithoutNotify(int position);
+
     public abstract void removeItems(List<T> items);
 
 

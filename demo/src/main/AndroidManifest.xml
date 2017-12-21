@@ -32,19 +32,27 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.baozi.demo.activity.TestActivity"
             android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity android:name=".activity.CityListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CityListActivity"/>
         <activity android:name=".activity.ShopListActivity"/>
         <activity android:name=".activity.TestListAativity"/>
         <activity android:name=".activity.ShopTabListActivity"/>
         <activity android:name=".activity.NewsActivity"/>
         <activity android:name=".activity.SortActivity"/>
-        <activity android:name=".activity.SwipeSortActivity"/>
+        <activity android:name=".activity.SwipeSortActivity">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
         <!--<activity android:name=".activity.TestActivity"/>-->
     </application>
 </manifest>

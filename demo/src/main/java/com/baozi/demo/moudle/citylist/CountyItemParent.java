@@ -11,12 +11,12 @@ import java.util.List;
 
 /**
  */
-public class CountyItemParent extends TreeItemGroup<CityBean.CitysBean> {
+public class CountyItemParent extends TreeItem<CityBean.CitysBean> {
 
-    @Override
-    public List<TreeItem> initChildList(CityBean.CitysBean data) {
-        return ItemHelperFactory.createTreeItemList(data.getAreas(), AreaItem.class, this);
-    }
+//    @Override
+//    public List<TreeItem> initChildList(CityBean.CitysBean data) {
+//        return ItemHelperFactory.createTreeItemList(data.getAreas(), AreaItem.class, this);
+//    }
 
 
     @Override

@@ -22,6 +22,12 @@ public abstract class TreeItem<D> {
      * @return 所占值, 比如recyclerview的列数为6, item需要占一半宽度, 就设置3
      */
     private int spanSize;
+
+    /**
+     *在相同子类中的位置，从0开始
+     */
+    public int position;
+
     private ItemManager mItemManager;
 
     public void setParentItem(TreeItemGroup parentItem) {
